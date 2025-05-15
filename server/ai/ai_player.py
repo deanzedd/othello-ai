@@ -3,7 +3,8 @@ import utils
 import copy
 from ai import evaluator
 import numpy as np
-
+from collections import defaultdict
+import pickle
 
 class AIPlayer:
     def __init__(self, player):
@@ -147,8 +148,4 @@ class QLearningPlayer:
         # Chuyển lại thành (row, col)
         return best_action // self.board_size, best_action % self.board_size
 
-
-    
-
-        return self.get_random_move(game)
 

@@ -68,13 +68,18 @@ class OthelloEnv(gym.Env):
 
         return observation, reward, terminated, truncated, info
 
+    
+    
+    '''
+    khi cho con agent ở đội nào thì chỉnh lại reward cho bên đó
+    '''
     # tính toán phần thưởng khi trò chơi kết thúc
     def _get_reward(self):
         if self.game.is_game_over:
             if self.game.winner == BLACK:
-                return 100
-            elif self.game.winner == WHITE:
                 return -100
+            elif self.game.winner == WHITE:
+                return 100
             else:
                 return 0  # Hòa
         return 0

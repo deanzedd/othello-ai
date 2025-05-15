@@ -13,16 +13,11 @@ from othello import BLACK, WHITE
 
 CORNERS = [(0,0), (0,7), (7,0), (7,7)]
 
-weights = pd.read_csv('phase_weights.csv', header=None).to_numpy()
+#weights = pd.read_csv('phase_weights.csv', header=None).to_numpy()
 
 def evaluate(board_state, player):
-    raw_features = extract_features(board_state, player)
-    phase = raw_features[5]
-    features = raw_features[:-1]
-    weight_index = phase
-    phase_weights = weights[weight_index]
-    score = np.dot(features, phase_weights)
-    return score
+    dif = utils.get_score(board_state, WHITE) - utils.get_score(board_state, BLACK)
+    return dif
 
 def minimax(board_state, depth, isMax, alpha, beta):
     "MAX is WHITE, MIN is BLACK"

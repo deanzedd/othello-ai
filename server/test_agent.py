@@ -1,6 +1,6 @@
 from test_enviroment import OthelloEnv  # Môi trường Othello
 from othello import BLACK, WHITE
-from ai.ai_player import QLearningPlayer, RandomPlayer  # Player của bạn
+from ai.ai_player import QLearningPlayer, RandomPlayer, AIPlayer  # Player của bạn
 
 if __name__ == "__main__":
     total_black_win = 0
@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
         env = OthelloEnv()
         ai_agent_white = QLearningPlayer(WHITE, q_table_path="q_table.pkl")
-        random_agent_black = RandomPlayer(env.game)
+        random_agent_black = AIPlayer(BLACK)
 
         observation, info = env.reset()
         done = False
@@ -44,10 +44,10 @@ if __name__ == "__main__":
 
         # Ghi nhận kết quả
         print("Game Over!")
-        if reward > 0:
+        if reward < 0:
             print("BLACK wins!")
             total_black_win += 1
-        elif reward < 0:
+        elif reward > 0:
             print("WHITE wins!")
             total_white_win += 1
         else:
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     # Tổng kết sau 20 game
     print("\n=== KẾT QUẢ SAU 20 GAME ===")
-    print(f"WHITE (AIPlayer) thắng: {total_black_win}")
-    print(f"BLACK (RandomPlayer) thắng: {total_white_win}")
+    print(f"WHITE (AIPlayer) thắng: {total_white_win}")
+    print(f"BLACK (MiniMax_Player) thắng: {total_black_win}")
     print(f"Hòa: {total_draw}")
 
