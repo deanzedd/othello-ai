@@ -1,3 +1,5 @@
+import copy
+
 EMPTY = 0
 BLACK = 1
 WHITE = 2
@@ -19,7 +21,7 @@ def is_valid_move(board_state, player, row, col):
     if (board_state[row][col] != EMPTY):
         return False
     
-    opponent = 3 - player
+    opponent = get_opponent(player)
 
     for dr, dc in DIRECTIONS:
         temp_row, temp_col = row + dr, col + dc
@@ -42,26 +44,24 @@ def count_valid_moves(board_state, player):
     return sum(1 for row in range(8) for col in range(8) if is_valid_move(board_state, player, row, col))
 
 def make_move(board_state, row, col, player):
-    board_state[row][col] = player
-    opponent = 3 - player
+    temp_board = copy.deepcopy(board_state)
+    temp_board[row][col] = player
+    opponent = get_opponent(player)
     for dr, dc in DIRECTIONS:
         temp_row, temp_col = row + dr, col + dc
         pieces_to_flip = []
-        while is_on_board(temp_row, temp_col) and board_state[temp_row][temp_col] == opponent:
+        while is_on_board(temp_row, temp_col) and temp_board[temp_row][temp_col] == opponent:
             pieces_to_flip.append((temp_row, temp_col))
             temp_row += dr
             temp_col += dc
-        if pieces_to_flip and is_on_board(temp_row, temp_col) and board_state[temp_row][temp_col] == player:
+        if pieces_to_flip and is_on_board(temp_row, temp_col) and temp_board[temp_row][temp_col] == player:
             for i, j in pieces_to_flip:
-                board_state[i][j] = player
+                temp_board[i][j] = player
 
-    return board_state
-
-def flip_pieces(board_state, row, col, player):
-    pass
+    return temp_board
 
 def is_game_over(board_state):
-    return not get_valid_moves(board_state, 1) and not get_valid_moves(board_state, 2)
+    return not get_valid_moves(board_state, BLACK) and not get_valid_moves(board_state, WHITE)
 
 def get_score(board_state, player):
     score = 0
@@ -80,3 +80,9 @@ def get_winner(board_state):
         return WHITE
     else:
         return None
+    
+def get_opponent(player):
+    """
+    Get the opponent player.
+    """
+    return WHITE if player == BLACK else BLACK

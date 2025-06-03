@@ -5,7 +5,7 @@ import secrets
 from websockets.asyncio.server import broadcast, serve
 
 from othello import BLACK, WHITE, Game
-from ai.ai_player import AIPlayer
+from ai.ai_player import MinimaxPlayer
 
 
 JOIN = {}
@@ -129,7 +129,7 @@ async def start_with_bot(websocket):
     """
     game = Game()
     connected = {websocket}
-    bot = AIPlayer(WHITE)
+    bot = MinimaxPlayer(WHITE)
 
     watch_key = secrets.token_urlsafe(12)
     WATCH[watch_key] = game, connected

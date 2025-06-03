@@ -1,5 +1,5 @@
 import utils
-
+import copy
 EMPTY = 0
 BLACK = 1
 WHITE = 2
@@ -37,6 +37,15 @@ class Game:
         self.board_y = 8
         #board_x = board_y = n = 8
 
+    def copy(self):
+        """Tạo bản sao sâu của game"""
+        new_game = Game()
+        new_game.board_state = copy.deepcopy(self.board_state)
+        new_game.turn = self.turn
+        new_game.winner = self.winner
+        new_game.is_game_over = self.is_game_over
+        return new_game
+    
     @property
     def get_valid_moves(self):
         return utils.get_valid_moves(self.board_state, self.turn)
@@ -56,7 +65,7 @@ class Game:
             raise ValueError("Invalid move.")
         # Game logic here
         self.board_state = utils.make_move(self.board_state, row, col, player)
-        opponent = 3 - player
+        opponent = utils.get_opponent(player)
         if utils.get_valid_moves(self.board_state, opponent):
             self.turn = opponent
         else: 
@@ -72,3 +81,6 @@ class Game:
     def getActionSize(self):
         # Return number of actions, n is the board size and +1 is for no-op action
         return self.board_x * self.board_y + 1
+    
+    def get_winner(self):
+        return utils.get_winner(self.board_state)
